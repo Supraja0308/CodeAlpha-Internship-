@@ -1,0 +1,42 @@
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class ChatBot {
+    public static void main(String[] args) {
+        HashMap<String, String> faq = new HashMap<>();
+        
+        faq.put("hi", "Hello! How can I assist you?");
+        faq.put("hello", "Hi there! Need help?");
+        faq.put("what is your name", "I am JavaBot, your virtual assistant.");
+        faq.put("how are you", "I'm just a bunch of code, but I'm doing great!");
+        faq.put("bye", "Goodbye! Have a great day!");
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("ChatBot: Hello! Ask me anything (type 'bye' to exit).");
+
+        while (true) {
+            System.out.print("You: ");
+            String userInput = scanner.nextLine().toLowerCase();
+
+            if (userInput.equals("bye")) {
+                System.out.println("ChatBot: " + faq.get("bye"));
+                break;
+            }
+
+            boolean found = false;
+            for (String key : faq.keySet()) {
+                if (userInput.contains(key)) {
+                    System.out.println("ChatBot: " + faq.get(key));
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                System.out.println("ChatBot: Sorry, I don't understand that yet.");
+            }
+        }
+
+        scanner.close();
+    }
+}
