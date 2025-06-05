@@ -1,0 +1,92 @@
+import java.util.*;
+
+class Room {
+    String type;
+    double price;
+    boolean isBooked;
+
+    Room(String type, double price) {
+        this.type = type;
+        this.price = price;
+        this.isBooked = false;
+    }
+}
+
+public class HotelReservationSystem {
+    static Scanner scanner = new Scanner(System.in);
+    static ArrayList<Room> rooms = new ArrayList<>();
+
+    public static void main(String[] args) {
+        initializeRooms();
+
+        int choice;
+        do {
+            System.out.println("\n Hotel Reservation System");
+            System.out.println("1. View Available Rooms");
+            System.out.println("2. Book a Room");
+            System.out.println("3. Cancel Booking");
+            System.out.println("4. View All Bookings");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1 -> viewAvailableRooms();
+                case 2 -> bookRoom();
+                case 3 -> cancelBooking();
+                case 4 -> viewAllBookings();
+                case 5 -> System.out.println("Thank you for using the system!");
+                default -> System.out.println("Invalid choice.");
+            }
+        } while (choice != 5);
+    }
+
+    static void initializeRooms() {
+        rooms.add(new Room("Standard", 1000));
+        rooms.add(new Room("Deluxe", 2000));
+        rooms.add(new Room("Suite", 3000));
+    }
+
+    static void viewAvailableRooms() {
+        System.out.println("\nAvailable Rooms:");
+        for (int i = 0; i < rooms.size(); i++) {
+            Room r = rooms.get(i);
+            if (!r.isBooked) {
+                System.out.println((i + 1) + ". " + r.type + " - ₹" + r.price);
+            }
+        }
+    }
+
+    static void bookRoom() {
+        viewAvailableRooms();
+        System.out.print("Enter room number to book: ");
+        int roomNum = scanner.nextInt();
+        if (roomNum < 1 || roomNum > rooms.size() || rooms.get(roomNum - 1).isBooked) {
+            System.out.println("Invalid or already booked.");
+        } else {
+            rooms.get(roomNum - 1).isBooked = true;
+            System.out.println("Booking successful! Amount: ₹" + rooms.get(roomNum - 1).price);
+        }
+    }
+
+    static void cancelBooking() {
+        viewAllBookings();
+        System.out.print("Enter room number to cancel booking: ");
+        int roomNum = scanner.nextInt();
+        if (roomNum < 1 || roomNum > rooms.size() || !rooms.get(roomNum - 1).isBooked) {
+            System.out.println("Invalid room number or not booked.");
+        } else {
+            rooms.get(roomNum - 1).isBooked = false;
+            System.out.println("Booking cancelled successfully.");
+        }
+    }
+
+    static void viewAllBookings() {
+        System.out.println("\nAll Rooms:");
+        for (int i = 0; i < rooms.size(); i++) {
+            Room r = rooms.get(i);
+            String status = r.isBooked ? "Booked" : "Available";
+            System.out.println((i + 1) + ". " + r.type + " - ₹" + r.price + " [" + status + "]");
+        }
+    }
+}
